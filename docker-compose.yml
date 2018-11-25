@@ -1,0 +1,32 @@
+version: '3.6'
+
+services:
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=vrnvrn
+    ports:
+      - "5433:5433"
+
+  django-app:
+    build: ./app/
+    environment:
+        - DATABASE_HOST=db
+    #   - SECRET_KEY=django-app
+    #   - DATABASE_NAME=django
+    #   - DATABASE_USER=django
+    #   - DATABASE_PASSWORD=django
+    volumes:
+      - .:/app/p8_pure_beurre
+    ports:
+      - "8000:8000"
+    command: bash -c "python3 manage.py makemigrations && python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
+    restart: on-failure
+    depends_on:
+      - db
+    links:
+      - db
+
+volumes:
+  db-persistance:
+            
