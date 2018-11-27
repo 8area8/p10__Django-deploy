@@ -21,8 +21,8 @@ services:
     #   - DATABASE_PASSWORD=django
     volumes:
       - .:/app/p8_pure_beurre
-      - static_volume:/app/p8_pure_beurre/assets/bundles
-      - media_volume:/app/p8_pure_beurre/public/media
+      - static_volume:/app/assets
+      - media_volume:/app/public/media
     command: bash -c "python3 manage.py wait_db && python3 manage.py makemigrations && python3 manage.py migrate && gunicorn --bind=0.0.0.0:8000 app.wsgi:application"
     restart: on-failure
     depends_on:
@@ -37,8 +37,8 @@ services:
       - 8000:80
     volumes:
       - ./config/nginx/conf.d:/etc/nginx/conf.d
-      - static_volume:/app/p8_pure_beurre/assets/bundles
-      - media_volume:/app/p8_pure_beurre/public/media
+      - static_volume:/app/assets
+      - media_volume:/app/public/media
     restart: on-failure
     depends_on:
       - django-app
