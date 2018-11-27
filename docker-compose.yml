@@ -3,16 +3,14 @@ version: '3.6'
 services:
   db:
     image: postgres
+    restart: on-failure
     environment:
       - POSTGRES_PASSWORD=vrnvrn
     ports:
-      - "5433:5433"
+      - "5432:5432"
+    networks:
+      - db_network
   
-  nginx:
-    image: nginx
-    ports:
-      - "800:800"
-
   django-app:
     build: ./app/
     environment:
@@ -23,15 +21,38 @@ services:
     #   - DATABASE_PASSWORD=django
     volumes:
       - .:/app/p8_pure_beurre
-    ports:
-      - "8000:8000"
-    command: bash -c "python3 manage.py wait_db && python3 manage.py makemigrations && python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
+      - static_volume:/app/p8_pure_beurre/assets/bundles
+      - media_volume:/app/p8_pure_beurre/public/media
+    command: bash -c "python3 manage.py wait_db && python3 manage.py makemigrations && python3 manage.py migrate && gunicorn --bind=0.0.0.0:8000 app.wsgi:application"
     restart: on-failure
     depends_on:
       - db
-    links:
-      - db
+    networks:
+      - nginx_network
+      - db_network
+
+  nginx:
+    image: nginx
+    ports:
+      - 8000:80
+    volumes:
+      - ./config/nginx/conf.d:/etc/nginx/conf.d
+      - static_volume:/app/p8_pure_beurre/assets/bundles
+      - media_volume:/app/p8_pure_beurre/public/media
+    restart: on-failure
+    depends_on:
+      - django-app
+    networks:
+      - nginx_network
+
+networks:
+  nginx_network:
+    driver: bridge
+  db_network:
+    driver: bridge
 
 volumes:
   db-persistance:
+  static_volume:
+  media_volume:
             
