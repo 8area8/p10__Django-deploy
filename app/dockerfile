@@ -1,12 +1,7 @@
 # Use an official Python runtime as a parent image
 FROM python:3.6-slim
 
-ENV PYTHONUNBUFFERED 1
-
 WORKDIR /app
 COPY p8_pure_beurre/ /app
 
-RUN pip install --upgrade pip==18.0
-RUN pip install pipenv
-RUN pipenv install --system --deploy --ignore-pipfile
-RUN python3 manage.py collectstatic --no-input
+RUN pip install pipenv && pipenv install --system --deploy --ignore-pipfile && python3 manage.py collectstatic --no-input

@@ -1,35 +1,25 @@
 version: '3.6'
 
 services:
-  db:
-    image: postgres
-    restart: on-failure
-    environment:
-      - POSTGRES_PASSWORD=vrnvrn
-    ports:
-      - "5432:5432"
-    networks:
-      - db_network
-  
-  django-app:
+
+  django:
     build: ./app/
     environment:
-        - DATABASE_HOST=db
-    #   - SECRET_KEY=django-app
-    #   - DATABASE_NAME=django
-    #   - DATABASE_USER=django
-    #   - DATABASE_PASSWORD=django
+      # - SECRET_KEY=django
+      - DATABASE_NAME=mikael
+      - DATABASE_USER=mikael
+      - DATABASE_PASSWORD=vrnovOYPDWm12
+      - DATABASE_HOST=food-fact.clevaxcctwd5.us-east-1.rds.amazonaws.com
+      - DATABASE_PORT=5432
+      - DATABASE_URL=postgis://mikael:vrnovOYPDWm12@food-fact.clevaxcctwd5.us-east-1.rds.amazonaws.com:5432/food-fact
     volumes:
       - .:/app/p8_pure_beurre
-      - static_volume:/app/assets
+      - static_volume:/app/staticfiles
       - media_volume:/app/public/media
-    command: bash -c "python3 manage.py wait_db && python3 manage.py makemigrations && python3 manage.py migrate && gunicorn --bind=0.0.0.0:8000 app.wsgi:application"
+    command: bash -c "python3 manage.py migrate && gunicorn --bind=0.0.0.0:8000 app.wsgi:application"
     restart: on-failure
-    depends_on:
-      - db
     networks:
       - nginx_network
-      - db_network
 
   nginx:
     image: nginx
@@ -37,22 +27,18 @@ services:
       - 8000:80
     volumes:
       - ./config/nginx/conf.d:/etc/nginx/conf.d
-      - static_volume:/app/assets
+      - static_volume:/app/staticfiles
       - media_volume:/app/public/media
     restart: on-failure
     depends_on:
-      - django-app
+      - django
     networks:
       - nginx_network
 
 networks:
   nginx_network:
     driver: bridge
-  db_network:
-    driver: bridge
 
 volumes:
-  db-persistance:
   static_volume:
   media_volume:
-            
