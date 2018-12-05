@@ -4,4 +4,5 @@ FROM python:3.6-slim
 WORKDIR /app
 COPY p8_pure_beurre/ /app
 
-RUN pip install pipenv && pipenv install --system --deploy --ignore-pipfile && python3 manage.py collectstatic --no-input
+
+RUN pip install pipenv && pipenv install --system --deploy --ignore-pipfile && python3 manage.py collectstatic --no-input && ls /app/staticfiles/
