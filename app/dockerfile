@@ -5,4 +5,4 @@ WORKDIR /app
 COPY p8_pure_beurre/ /app
 
 
-RUN pip install pipenv && pipenv install --system --deploy --ignore-pipfile && python3 manage.py collectstatic --no-input && ls /app/staticfiles/
+RUN pip install pipenv && pipenv install --system --deploy --ignore-pipfile

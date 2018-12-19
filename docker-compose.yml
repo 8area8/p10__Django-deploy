@@ -7,7 +7,7 @@ services:
     build: ./app/
     env_file: .env
     volumes:
-      - app_volume:/app/app
+      - app_volume:/app
       - static_volume:/app/staticfiles
       - media_volume:/app/public/media
     command: bash -c "python3 manage.py migrate && python3 manage.py collectstatic --no-input && gunicorn --bind=0.0.0.0:8000 app.wsgi:application"
@@ -19,6 +19,7 @@ services:
       - redis_network
 
   nginx:
+    container_name: nginx
     image: nginx
     ports:
       - 80:80
@@ -33,10 +34,11 @@ services:
       - nginx_network
 
   celery:
-    build: ./app/
+    container_name: celery
+    image: projeta10_django
     restart: on-failure
     env_file: '.env'
-    command: 'python3 -m celery -A app.celery_settings worker'
+    command: 'python3 -m celery -A app.celery_settings worker --pool=eventlet -l info'
     volumes:
       - app_volume:/app
     depends_on:
@@ -54,6 +56,15 @@ services:
       - redis_volume:/data
     networks:
       - redis_network
+  
+  cron:
+    container_name: cron
+    build: ./cron/
+    restart: on-failure
+    env_file: '.env'
+    command: ''
+    depends_on:
+      - django
 
 
 networks:
