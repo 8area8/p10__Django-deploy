@@ -1,0 +1,14 @@
+language: python
+python:
+  - '3.6'
+
+before_script:
+  - pipenv install app.p8_pure_beurre
+
+env: DJANGO_SETTINGS_MODULE="disquaire_project.settings"
+
+services:
+  - postgresql
+
+script:
+  - ./manage.py test
