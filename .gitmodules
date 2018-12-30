@@ -1,4 +1,4 @@
-[submodule "app/p8_pure_beurre"]
-	path = app/p8_pure_beurre
+[submodule "django/p8_pure_beurre"]
+	path = django/p8_pure_beurre
 	url = https://github.com/8area8/p8_pure_beurre/
 	branch = AWS

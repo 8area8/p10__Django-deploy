@@ -4,7 +4,7 @@ services:
 
   django:
     container_name: food_fact
-    build: ./app/
+    build: ./django/
     env_file: .env
     volumes:
       - app_volume:/app
