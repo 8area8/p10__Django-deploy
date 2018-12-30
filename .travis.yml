@@ -13,6 +13,6 @@ before_install:
 before_script:
   - cd app/p8_pure_beurre/ && pip install pipenv && pipenv install
 
-script: pipenv run python3 /app/p8_pure_beurre/manage.py test
+script: pipenv run python3 manage.py test
 
 env: DJANGO_SETTINGS_MODULE=app.p8_pure_beurre.app.settings.travis
