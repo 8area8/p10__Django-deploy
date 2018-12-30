@@ -11,7 +11,7 @@ before_install:
     - git submodule update --init --recursive
 
 before_script:
-  - cd app.p8_pure_beurre && pipenv install
+  - cd app/p8_pure_beurre/ && pipenv install
 
 script: python3 manage.py test
 
