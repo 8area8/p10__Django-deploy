@@ -5,6 +5,7 @@ services:
   django:
     container_name: food_fact
     build: ./django/
+    image: django_app
     env_file: .env
     volumes:
       - app_volume:/app
@@ -35,7 +36,7 @@ services:
 
   celery:
     container_name: celery
-    image: projeta10_django
+    image: django_app
     restart: on-failure
     env_file: '.env'
     command: 'python3 -m celery -A app.celery_settings worker --pool=eventlet -l info'

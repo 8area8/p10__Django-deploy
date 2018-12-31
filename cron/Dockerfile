@@ -1,5 +1,5 @@
 # Use an official Python runtime as a parent image
-FROM projeta10_django:latest
+FROM django_app:latest
 
 RUN apt-get update -y && apt-get install vim -y && apt-get install cron -y
 
