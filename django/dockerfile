@@ -2,7 +2,9 @@
 FROM python:3.6-slim
 
 WORKDIR /app
-COPY p8_pure_beurre/ /app
 
-
+COPY p8_pure_beurre/Pipfile /app
+COPY p8_pure_beurre/Pipfile.lock /app
 RUN pip install pipenv && pipenv install --system --deploy --ignore-pipfile
+
+COPY p8_pure_beurre/ /app
