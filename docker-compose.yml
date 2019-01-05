@@ -64,7 +64,7 @@ services:
     restart: on-failure
     env_file: '.env'
     volumes:
-      - ./django/p8_pure_beurre/:/app
+      - app_volume:/app
     command: 'cron && tail -f /var/log/cron.log'
     depends_on:
       - django
