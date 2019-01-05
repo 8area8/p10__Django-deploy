@@ -25,7 +25,7 @@ services:
     ports:
       - 80:80
     volumes:
-      - ./config/nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/:/etc/nginx/conf.d
       - static_volume:/app/staticfiles
       - media_volume:/app/public/media
     restart: on-failure
