@@ -26,7 +26,7 @@ This project aims to deploy an online application, without the need for simplifi
 
 ## Getting Started
 
-You can clone this repository to your local drive and then deploy it to heroku.  
+You can clone this repository to your local drive.  
 This project uses a submodule that contains the application. Make sure to import the submodule by executing the code below, from the root of the project :
 ```bash
 git submodule update --remote --merge
