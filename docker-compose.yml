@@ -11,7 +11,7 @@ services:
       - app_volume:/app
       - static_volume:/app/staticfiles
       - media_volume:/app/public/media
-    command: bash -c "python3 manage.py makemigrations --merge && python3 manage.py migrate && python3 manage.py collectstatic --no-input && gunicorn --bind=0.0.0.0:8000 app.wsgi:application"
+    command: bash -c "python3 manage.py makemigrations --merge && python3 manage.py collectstatic --no-input && gunicorn --bind=0.0.0.0:8000 app.wsgi:application"
     restart: on-failure
     depends_on:
       - redis
